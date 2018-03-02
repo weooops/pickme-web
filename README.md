@@ -1,5 +1,5 @@
 # Pick Me
-101명의 소녀(소년)들 중에서 나의 이상형을 찾아라!
+이상형 월드컵
 
 ## Technical stack
 ### FrontEnd

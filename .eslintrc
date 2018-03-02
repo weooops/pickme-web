@@ -6,6 +6,9 @@
   },
   "rules": {
     "comma-dangle": ["error", "never"],
-    "arrow-body-style": ["error", "always"]
+    "arrow-body-style": "off",
+    "no-plusplus": "off",
+    "arrow-parens": "off",
+    "no-param-reassign": "off"
   }
 }

@@ -5,23 +5,27 @@ const postcssFlexbugsFixes = require('postcss-flexbugs-fixes');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'cheap-module-source-map',
-  devServer: {
-    publicPath: '/',
-    compress: true,
-    port: 3000
-  },
   entry: {
-    app: './src/scripts/index.js'
+    home: './src/scripts/home.js',
+    about: './src/scripts/about.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
     filename: 'static/js/[name].[hash:8].js'
   },
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader'
+        }
+      },
       {
         test: /\.js$/,
         enforce: 'pre',
@@ -95,10 +99,24 @@ module.exports = {
     new ExtractTextPlugin('static/css/[name].[contenthash:8].css'),
     new HtmlWebpackPlugin({
       inject: true,
-      template: './src/index.html'
+      chunks: ['home'],
+      template: './src/home.html',
+      filename: 'home.html'
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      chunks: ['about'],
+      template: './src/about.html',
+      filename: 'about.html'
     }),
     new ManifestPlugin({
       fileName: 'asset-manifest.json'
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: 'public/',
+        to: './'
+      }
+    ])
   ]
 };

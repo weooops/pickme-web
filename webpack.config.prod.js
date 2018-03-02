@@ -6,10 +6,24 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
+const minifyOpts = {
+  removeComments: true,
+  collapseWhitespace: true,
+  removeRedundantAttributes: true,
+  useShortDoctype: true,
+  removeEmptyAttributes: true,
+  removeStyleLinkTypeAttributes: true,
+  keepClosingSlash: true,
+  minifyJS: true,
+  minifyCSS: true,
+  minifyURLs: true
+};
+
 module.exports = {
   devtool: false,
   entry: {
-    app: './src/scripts/index.js'
+    home: './src/scripts/home.js',
+    about: './src/scripts/about.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -17,6 +31,12 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader'
+        }
+      },
       {
         test: /\.js$/,
         enforce: 'pre',
@@ -85,19 +105,17 @@ module.exports = {
     new ExtractTextPlugin('static/css/[name].[contenthash:8].css'),
     new HtmlWebpackPlugin({
       inject: true,
-      template: './src/index.html',
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true
-      }
+      chunks: ['home'],
+      template: './src/home.html',
+      filename: 'home.html',
+      minify: minifyOpts
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      chunks: ['about'],
+      template: './src/about.html',
+      filename: 'about.html',
+      minify: minifyOpts
     }),
     new ManifestPlugin({
       fileName: 'asset-manifest.json'
