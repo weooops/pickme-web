@@ -5,6 +5,7 @@ const postcssFlexbugsFixes = require('postcss-flexbugs-fixes');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const minifyOpts = {
   removeComments: true,
@@ -27,6 +28,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
     filename: 'static/js/[name].[hash:8].js'
   },
   module: {
@@ -119,6 +121,12 @@ module.exports = {
     }),
     new ManifestPlugin({
       fileName: 'asset-manifest.json'
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: 'public/',
+        to: './'
+      }
+    ])
   ]
 };
